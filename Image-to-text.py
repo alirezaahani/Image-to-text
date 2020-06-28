@@ -10,7 +10,10 @@ def ItS():
 		#Converting image to text
 		Content = pytesseract.image_to_string(User_input.name)
 		#Showing user output
-		User_content.configure(text="Your text is :{0}".format(Content))
+		if not Content == "":
+			User_content.configure(text="Your text is :{0}".format(Content))
+		else :
+			User_content.configure(text="I can't see anything.")
 	except:
 		messagebox.showwarning(title='error',message="Please open a corrcet image")
 #Making a window
