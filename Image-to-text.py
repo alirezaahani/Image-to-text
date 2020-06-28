@@ -2,7 +2,6 @@
 from pytesseract import*
 from tkinter import*
 from tkinter import filedialog,messagebox
-import time
 #ItS : Image to String
 def ItS():
 	try:
