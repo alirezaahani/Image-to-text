@@ -1,35 +1,37 @@
-#You need to install pytesseract on your system
-from pytesseract import*
-from tkinter import*
-from tkinter import filedialog,messagebox
-#ItS : Image to String
-def ItS():
-	try:
-		#opening a file
-		User_input = filedialog.askopenfile()
-		#Converting image to text
-		Content = pytesseract.image_to_string(User_input.name)
-		#Showing user output
-		if not Content == "":
-			User_content.configure(text="Your text is :{0}".format(Content))
-		else :
-			User_content.configure(text="I can't see anything.")
-	except:
-		messagebox.showwarning(title='error',message="Please open a corrcet image")
-#Making a window
-mainWindow = Tk()
-#Window title
-mainWindow.title("Image to text")
-#Window background color
-mainWindow.configure(background="white")
-#Window size
-mainWindow.minsize(300,250)
-#Font,Size and background for label
-User_content = Label(mainWindow,background="white",font=("Arial",14))
-#Packing the label
-User_content.pack()
-#Create a new button
-Go_button = Button(mainWindow,text="Go",command=ItS,background="gray",font=("Arial",10))
-Go_button.pack()
-#Looping the window and program
-mainWindow.mainloop()
+#This file writed by alirezaahani :)
+from PyQt5 import QtCore,QtGui,QtWidgets
+from PyQt5.QtWidgets import QApplication,QFileDialog
+from PyQt5.QtCore import pyqtSlot
+import ui,pytesseract
+def Image_to_text(file):
+    output = pytesseract.image_to_string(file)
+    if not output == "":
+        return output
+    else:
+        return "I can't see anything"
+class App(QtWidgets.QMainWindow, ui.Ui_MainWindow):
+    def __init__(self,parent=None):
+        super(App,self).__init__(parent)
+        self.setupUi(self)
+
+    def openFileNameDialog(self):
+        options = QFileDialog.Options()
+        options = QFileDialog.DontUseNativeDialog
+        user_file, _ = QFileDialog.getOpenFileName(self,"Please select a file", "","Image Files (*.png *jpg *.jpeg)", options=options)
+        if user_file:
+            self.user_contect.setText(Image_to_text(user_file))
+
+    @pyqtSlot()
+    def go_button_pressed(self):
+        self.openFileNameDialog()
+
+
+def main():
+    mainApp = QApplication(['Image to text'])
+    mainwindow = App()
+    mainwindow.show()
+    mainApp.exec_()
+
+
+if __name__ == "__main__":
+    main()
